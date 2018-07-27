@@ -1,9 +1,20 @@
 var StellarSdk = require('stellar-sdk');
+
+
+if(process.argv.length<4) {
+  console.error('ERROR: Missing input arguments: The secret for the source account and the publicKey for the destination account to pay.');
+  console.error('Usage: ',process.argv[0],process.argv[1],'[source-secret] [destination-publicKey]');
+  return;
+}
+const sourceSecret = process.argv[2];
+const destPublicKey = process.argv[3];
+
+
 StellarSdk.Network.useTestNetwork();
 var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 var sourceKeys = StellarSdk.Keypair
-  .fromSecret('SBYXQ3XSNLSXVB4ELI5IQCC7TFN46J35EGPQONFR4RHV3QWZVDO4G7JA');
-var destinationId = 'GCMSMEQZWJHFHY243BQ6TVOPJW7OEGE6P6JN62CW52DJDLFIJ56IA3XI';
+  .fromSecret(sourceSecret);
+var destinationId = destPublicKey;
 // Transaction will hold a built transaction we can resubmit if the result is unknown.
 var transaction;
 
